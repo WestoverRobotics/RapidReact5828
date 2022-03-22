@@ -4,43 +4,94 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.SparkMaxRelativeEncoder;
 
 
 public class Arm extends SubsystemBase {
 
-  private final CANSparkMax armMotor;
+  private CANSparkMax armMotor;
+  private SparkMaxPIDController armPIDController;
+  public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
+  private RelativeEncoder armEncoder;
+
   /** Creates a new Arm. */
   public Arm() {
     armMotor = new CANSparkMax(5,MotorType.kBrushless);
+    armEncoder = armMotor.getEncoder(SparkMaxRelativeEncoder.Type.kQuadrature, 4096);
     armMotor.setIdleMode(IdleMode.kBrake);
-  }
-  /**public void periodic() {
-     This method will be called once per scheduler run
-    SmartDashboard.putNumber("Arm Motor", armMotor.getSelectedSensorPosition());
-  }*/
 
-  /*
-  public void runArm(){
-    armMotor.set(1);
+    //Arm PID Object and Feedback Object
+    armPIDController = armMotor.getPIDController();
+    armPIDController.setFeedbackDevice(armEncoder);
+
+    // PID coefficients
+    kP = 0.1; 
+    kI = 1e-4;
+    kD = 1; 
+    kIz = 0; 
+    kFF = 0; 
+    kMaxOutput = 1; 
+    kMinOutput = -1;
+
+    // set PID coefficients
+    armPIDController.setP(kP);
+    armPIDController.setI(kI);
+    armPIDController.setD(kD);
+    armPIDController.setIZone(kIz);
+    armPIDController.setFF(kFF);
+    armPIDController.setOutputRange(kMinOutput, kMaxOutput);
+
+    // display PID coefficients on SmartDashboard
+    SmartDashboard.putNumber("P Gain", kP);
+    SmartDashboard.putNumber("I Gain", kI);
+    SmartDashboard.putNumber("D Gain", kD);
+    SmartDashboard.putNumber("I Zone", kIz);
+    SmartDashboard.putNumber("Feed Forward", kFF);
+    SmartDashboard.putNumber("Max Output", kMaxOutput);
+    SmartDashboard.putNumber("Min Output", kMinOutput);
+    SmartDashboard.putNumber("Set Rotations", 0);
+  }
+  
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
+    
+    // read PID coefficients from SmartDashboard
+    double p = SmartDashboard.getNumber("P Gain", 0);
+    double i = SmartDashboard.getNumber("I Gain", 0);
+    double d = SmartDashboard.getNumber("D Gain", 0);
+    double iz = SmartDashboard.getNumber("I Zone", 0);
+    double ff = SmartDashboard.getNumber("Feed Forward", 0);
+    double max = SmartDashboard.getNumber("Max Output", 0);
+    double min = SmartDashboard.getNumber("Min Output", 0);
+    double rotations = SmartDashboard.getNumber("Set Rotations", 0);
+
+    // if PID coefficients on SmartDashboard have changed, write new values to controller
+    if((p != kP)) {armPIDController.setP(p); kP = p; }
+    if((i != kI)) {armPIDController.setI(i); kI = i; }
+    if((d != kD)) {armPIDController.setD(d); kD = d; }
+    if((iz != kIz)) {armPIDController.setIZone(iz); kIz = iz; }
+    if((ff != kFF)) {armPIDController.setFF(ff); kFF = ff; }
+    if((max != kMaxOutput) || (min != kMinOutput)) { 
+     armPIDController.setOutputRange(min, max); 
+      kMinOutput = min; kMaxOutput = max; 
+
+    armPIDController.setReference(rotations, CANSparkMax.ControlType.kPosition);
+
+    SmartDashboard.putNumber("armMotorTemperature", armMotor.getMotorTemperature());
+    SmartDashboard.putNumber("SetPoint", rotations);
+    SmartDashboard.putNumber("ProcessVariable", armEncoder.getPosition());
+    }
   }
 
-  public void stopArm(){
-    armMotor.set(ControlMode.PercentOutput, 0);
-  }
-
-  public void resetArmEncoder(){
-    armMotor.setSelectedSensorPosition(0);
-  }
-
-  public double getArmEncoder(){
-    return armMotor.getSelectedSensorPosition();
-  }
-  */
+  //Commands
   public void armUp() {
     armMotor.set(.3);
   }
@@ -50,10 +101,5 @@ public class Arm extends SubsystemBase {
   public void armStop() {
     armMotor.stopMotor();
   }
-
-
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
 }
+
