@@ -60,6 +60,8 @@ public class RobotContainer {
     .whenPressed(() -> m_arm.armDown())
     .whenReleased(() -> m_arm.armStop());
 
+    new JoystickButton(m_driverController, Button.kY.value)
+    .whenPressed(() -> m_arm.armTop());
     //Intake-Shooter commands
     
   }

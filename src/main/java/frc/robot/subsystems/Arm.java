@@ -27,6 +27,9 @@ public class Arm extends SubsystemBase {
     armEncoder = armMotor.getEncoder(SparkMaxRelativeEncoder.Type.kQuadrature, 4096);
     armMotor.setIdleMode(IdleMode.kBrake);
 
+    //Arm Set Points
+    final double TOP = 100;
+    final double DOWN = 50;
     //Arm PID Object and Feedback Object
     armPIDController = armMotor.getPIDController();
     armPIDController.setFeedbackDevice(armEncoder);
@@ -101,5 +104,18 @@ public class Arm extends SubsystemBase {
   public void armStop() {
     armMotor.stopMotor();
   }
+  public void armTop() {
+    if(armEncoder.getPosition() < 5) {
+      armMotor.set(.1);
+    } else {
+      armMotor.set(0);
+    }
+  }
+    public void armBottom() {
+      if(armEncoder.getPosition() > 5) {
+        armMotor.set(-.1);
+      } else {
+        armMotor.set(0);
+    }
+  }
 }
-
