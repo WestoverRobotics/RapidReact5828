@@ -22,8 +22,6 @@ public class autoDriveBack extends CommandBase {
     m_driveTrain = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_driveTrain);
-
-    withTimeout(2.5);
   }
 
   // Called when the command is initially scheduled.
@@ -35,8 +33,6 @@ public class autoDriveBack extends CommandBase {
   public void execute() {
     m_driveTrain.autoDriveBack();
   }
-  
-
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {}
