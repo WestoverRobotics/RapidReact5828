@@ -4,8 +4,6 @@
 
 package frc.robot.commands;
 
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveTrain;
@@ -14,9 +12,9 @@ public class DriveManual extends CommandBase {
   /** Creates a new DriveManual */
   private final DriveTrain m_drive;
   /** Creates a new DriveManual. */
-  public DriveManual(DriveTrain subsystem, DoubleSupplier forward, DoubleSupplier rotation) {
+  public DriveManual(DriveTrain DriveTrain) {
     // Use addRequirements() here to declare subsystem dependencies.
-    m_drive = subsystem;
+    this.m_drive = DriveTrain;
     addRequirements(m_drive);
   }
 
@@ -29,21 +27,18 @@ public class DriveManual extends CommandBase {
   public void execute() {
 
     double speed = RobotContainer.m_driverController.getRawAxis(3) - RobotContainer.m_driverController.getRawAxis(2);
-    double rotation = RobotContainer.m_driverController.getRawAxis(0);
+    double rotation = -RobotContainer.m_driverController.getRawAxis(0);
     boolean quickTurn = speed > -0.2 && speed < 0.2;
 
-    if( speed > -0.1 && speed < 0.1){
+    if( speed > -0.2 && speed < 0.2){
       speed = 0;
     }
 
-    if( rotation > -0.1 && rotation < 0.1){
+    if( rotation > -0.2 && rotation < 0.2){
       rotation = 0;
     }
     
-    m_drive.curvatureDrive(-speed*.7, rotation*.7, quickTurn);
-
-    //m_drive.arcadeDrive(-m_forward.getAsDouble()*.8,-m_rotation.getAsDouble()*.8);
-
+    m_drive.curvatureDrive(-speed, rotation, quickTurn);
   }
 
   // Called once the command ends or is interrupted.

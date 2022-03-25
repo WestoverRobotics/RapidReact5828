@@ -34,15 +34,18 @@ public class DriveTrain extends SubsystemBase {
 
     m_drive = new DifferentialDrive(leftMotors, rightMotors);    
   }
-    public void curvatureDrive(double speed, double rotation, boolean quickturn){
-      m_drive.curvatureDrive(speed, rotation, quickturn);
-  }
 
-    public void autoDriveBack() {
-      m_drive.tankDrive(-.5, -.5);
-    }
+  public void autoDriveBack() {
+    m_drive.tankDrive(-.5, -.5);
+  }
+  public void driveTrainStop() {
+    m_drive.tankDrive(0, 0);
+  }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
   }
+  public void curvatureDrive(double speed, double rotation, boolean quickturn){
+    m_drive.curvatureDrive(speed, rotation, quickturn);
+}
 }

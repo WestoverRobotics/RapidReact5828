@@ -15,6 +15,7 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.DriveManual;
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -36,11 +37,7 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
     
-
-
-    m_driveTrain.setDefaultCommand(
-      new DriveManual(m_driveTrain, m_driverController::getLeftY, m_driverController::getRightY)
-    );
+    this.initalizeStartup();
   }
 
   /**
@@ -74,6 +71,11 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
+
+  private void initalizeStartup() {
+    m_driveTrain.setDefaultCommand(
+      new DriveManual(m_driveTrain));
+  }
   public Command getAutonomousCommand() {
     
     // An ExampleCommand will run in autonomous

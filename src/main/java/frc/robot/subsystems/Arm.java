@@ -24,7 +24,7 @@ public class Arm extends SubsystemBase {
   /** Creates a new Arm. */
   public Arm() {
     armMotor = new CANSparkMax(5,MotorType.kBrushless);
-    armEncoder = armMotor.getEncoder(SparkMaxRelativeEncoder.Type.kQuadrature, 4096);
+    armEncoder = armMotor.getEncoder();
     armMotor.setIdleMode(IdleMode.kBrake);
 
     //Arm Set Points
@@ -96,10 +96,10 @@ public class Arm extends SubsystemBase {
 
   //Commands
   public void armUp() {
-    armMotor.set(.3);
+    armMotor.set(.2);
   }
   public void armDown() {
-    armMotor.set(-.3);
+    armMotor.set(-.2);
   }
   public void armStop() {
     armMotor.stopMotor();
