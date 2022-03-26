@@ -11,7 +11,6 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
-import com.revrobotics.SparkMaxRelativeEncoder;
 
 
 public class Arm extends SubsystemBase {
@@ -99,7 +98,7 @@ public class Arm extends SubsystemBase {
     armMotor.set(.2);
   }
   public void armDown() {
-    armMotor.set(-.2);
+    armMotor.set(-.1);
   }
   public void armStop() {
     armMotor.stopMotor();

@@ -16,7 +16,6 @@ import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.DriveManual;
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -52,12 +51,12 @@ public class RobotContainer {
 
     //Arm commands
     new JoystickButton(m_driverController, Button.kA.value)
-    .whenPressed(() -> m_arm.armUp())  
-    .whenReleased(() -> m_arm.armStop());
+    .whenPressed(() -> m_arm.armUp());  
+    //.whenReleased(() -> m_arm.armStop());
 
     new JoystickButton(m_driverController, Button.kB.value)
-    .whenPressed(() -> m_arm.armDown())
-    .whenReleased(() -> m_arm.armStop());
+    .whenPressed(() -> m_arm.armDown());
+    //.whenReleased(() -> m_arm.armStop());
 
     new JoystickButton(m_driverController, Button.kY.value)
     .whenPressed(() -> m_arm.armTop());
@@ -65,13 +64,14 @@ public class RobotContainer {
     new JoystickButton(m_driverController, Button.kX.value)
     .whenPressed(() -> m_arm.armBottom());
 
+    //Intake-Shooter commands
     new JoystickButton(m_driverController, Button.kLeftBumper.value)
-    .whileHeld(() -> m_Intake.intakeIn());
+    .whenPressed(() -> m_Intake.intakeIn())
+    .whenReleased(() -> m_Intake.intakeStop());
 
     new JoystickButton(m_driverController, Button.kRightBumper.value)
-    .whileHeld(() -> m_Intake.intakeOut());
-    //Intake-Shooter commands
-    
+    .whileHeld(() -> m_Intake.intakeOut())
+    .whenReleased(() -> m_Intake.intakeStop());
   }
 
   /**
