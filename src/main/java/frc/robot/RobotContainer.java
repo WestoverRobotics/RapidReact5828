@@ -13,6 +13,7 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.DriveManual;
@@ -26,6 +27,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveTrain m_driveTrain = new DriveTrain();
   private final Arm m_arm = new Arm();
+  private final Intake m_Intake = new Intake();
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   public static final XboxController m_driverController = new XboxController(0);
@@ -62,6 +64,12 @@ public class RobotContainer {
 
     new JoystickButton(m_driverController, Button.kX.value)
     .whenPressed(() -> m_arm.armBottom());
+
+    new JoystickButton(m_driverController, Button.kLeftBumper.value)
+    .whileHeld(() -> m_Intake.intakeIn());
+
+    new JoystickButton(m_driverController, Button.kRightBumper.value)
+    .whileHeld(() -> m_Intake.intakeOut());
     //Intake-Shooter commands
     
   }
