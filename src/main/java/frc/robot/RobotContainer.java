@@ -30,7 +30,7 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   public static final XboxController m_driverController = new XboxController(0);
-  public static final Joystick m_armJoystick = new Joystick(1);
+  public static final XboxController m_armController = new XboxController(1);
     
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -50,26 +50,26 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     //Arm commands
-    new JoystickButton(m_driverController, Button.kA.value)
+    new JoystickButton(m_armController, Button.kA.value)
     .whenPressed(() -> m_arm.armUp());  
     //.whenReleased(() -> m_arm.armStop());
 
-    new JoystickButton(m_driverController, Button.kB.value)
+    new JoystickButton(m_armController, Button.kB.value)
     .whenPressed(() -> m_arm.armDown());
     //.whenReleased(() -> m_arm.armStop());
 
-    new JoystickButton(m_driverController, Button.kY.value)
+    new JoystickButton(m_armController, Button.kY.value)
     .whenPressed(() -> m_arm.armTop());
 
-    new JoystickButton(m_driverController, Button.kX.value)
+    new JoystickButton(m_armController, Button.kX.value)
     .whenPressed(() -> m_arm.armBottom());
 
     //Intake-Shooter commands
-    new JoystickButton(m_driverController, Button.kLeftBumper.value)
+    new JoystickButton(m_armController, Button.kLeftBumper.value)
     .whenPressed(() -> m_Intake.intakeIn())
     .whenReleased(() -> m_Intake.intakeStop());
 
-    new JoystickButton(m_driverController, Button.kRightBumper.value)
+    new JoystickButton(m_armController, Button.kRightBumper.value)
     .whileHeld(() -> m_Intake.intakeOut())
     .whenReleased(() -> m_Intake.intakeStop());
   }
