@@ -10,12 +10,19 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.commands.DriveManual;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.autoScoreAndBack;
+import frc.robot.commands.driveBackSome;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -31,7 +38,11 @@ public class RobotContainer {
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   public static final XboxController m_driverController = new XboxController(0);
   public static final XboxController m_armController = new XboxController(1);
-    
+  private static final String autoScoreAndBack = null;
+  private final SendableChooser<String> m_autoChooser = new SendableChooser<>();
+
+  //auto commands
+  //private final SequentialCommandGroup m_autoScoreAndBack = new autoScoreAndBack(m_Intake, m_driveTrain);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -39,6 +50,9 @@ public class RobotContainer {
     configureButtonBindings();
     
     this.initalizeStartup();
+
+    /* Initialize autonomous command chooser and display on the SmartDashboard. */
+    this.initializeAutoChooser();
   }
 
   /**
@@ -83,6 +97,17 @@ public class RobotContainer {
   private void initalizeStartup() {
     m_driveTrain.setDefaultCommand(
       new DriveManual(m_driveTrain));
+  }
+
+  private void initializeAutoChooser()
+  {
+    /* Add options (which autonomous commands can be selected) to chooser. */
+    m_autoChooser.setDefaultOption("Do Nothing", "doNothing");
+    m_autoChooser.addOption("Score 1 Back Up", autoScoreAndBack);
+
+    /* Display chooser on SmartDashboard for operators to select which autonomous command to run during the auto period. */
+    SmartDashboard.putData("Autonomous Command", m_autoChooser);
+    
   }
   public Command getAutonomousCommand() {
     
