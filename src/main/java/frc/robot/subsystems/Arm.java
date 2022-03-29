@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
@@ -11,7 +12,6 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
-
 
 public class Arm extends SubsystemBase {
 
@@ -27,11 +27,15 @@ public class Arm extends SubsystemBase {
     armMotor.setIdleMode(IdleMode.kBrake);
 
     //Arm Set Points
-    final double TOP = 100;
-    final double DOWN = 50;
+    final double TOP;
+    final double DOWN;
     //Arm PID Object and Feedback Object
     armPIDController = armMotor.getPIDController();
     armPIDController.setFeedbackDevice(armEncoder);
+
+    //setPoint values
+    TOP = 100;
+    DOWN = 0;
 
     // PID coefficients
     kP = 0.1; 
@@ -117,4 +121,8 @@ public class Arm extends SubsystemBase {
         armMotor.set(0);
     }
   }
+  //encoder stuff
+    public void resetEncoder() {
+      armEncoder.setPosition(0);
+    }
 }

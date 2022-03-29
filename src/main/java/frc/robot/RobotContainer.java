@@ -5,20 +5,14 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.commands.DriveManual;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.autoScoreAndBack;
-import frc.robot.commands.driveBackSome;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -34,11 +28,9 @@ public class RobotContainer {
   private final DriveTrain m_driveTrain = new DriveTrain();
   private final Arm m_arm = new Arm();
   private final Intake m_Intake = new Intake();
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   public static final XboxController m_driverController = new XboxController(0);
   public static final XboxController m_armController = new XboxController(1);
-  private static final String autoScoreAndBack = null;
+
   private final SendableChooser<String> m_autoChooser = new SendableChooser<>();
 
   //auto commands
@@ -103,15 +95,22 @@ public class RobotContainer {
   {
     /* Add options (which autonomous commands can be selected) to chooser. */
     m_autoChooser.setDefaultOption("Do Nothing", "doNothing");
-    m_autoChooser.addOption("Score 1 Back Up", autoScoreAndBack);
+    m_autoChooser.addOption("Score 1 Back Up", "autoScoreAndBack");
 
     /* Display chooser on SmartDashboard for operators to select which autonomous command to run during the auto period. */
     SmartDashboard.putData("Autonomous Command", m_autoChooser);
     
   }
   public Command getAutonomousCommand() {
-    
-    // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+
+    switch (m_autoChooser.getSelected())
+    {
+      case "autoScoreAndBack" :
+        return new autoScoreAndBack();
+
+      default:
+        System.out.println("\nError selecting autonomous command:\nCommand selected: " + m_autoChooser.getSelected() + "\n");
+        return null;
+    }
   }
 }
