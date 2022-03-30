@@ -16,7 +16,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
+import frc.robot.commands.intakeOut;
+import frc.robot.commands.*;
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -25,12 +26,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final DriveTrain m_driveTrain = new DriveTrain();
-  private final Arm m_arm = new Arm();
-  private final Intake m_Intake = new Intake();
+  public static final DriveTrain m_driveTrain = new DriveTrain();
+  public static final Arm m_arm = new Arm();
+  public static final Intake m_Intake = new Intake();
+
   public static final XboxController m_driverController = new XboxController(0);
   public static final XboxController m_armController = new XboxController(1);
-  private final autoScoreAndBack m_autoCommand = new autoScoreAndBack(m_driveTrain, m_Intake);
+
+  private final autoScoreAndBack m_autoCommand = new autoScoreAndBack();
 
   //auto commands
   //private final SequentialCommandGroup m_autoScoreAndBack = new autoScoreAndBack(m_Intake, m_driveTrain);
