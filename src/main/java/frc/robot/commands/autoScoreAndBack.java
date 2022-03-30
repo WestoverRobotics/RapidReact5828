@@ -12,10 +12,10 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 public class autoScoreAndBack extends SequentialCommandGroup {
   
-  public autoScoreAndBack() {
+  public autoScoreAndBack(DriveTrain m_driveTrain, Intake m_Intake) {
     addCommands(
-      new intakeOut(null).withTimeout(2),
-      new driveBackSome(null).withTimeout(2)
+      new intakeOut(m_Intake).withTimeout(2),
+      new driveBackSome(m_driveTrain).withTimeout(2)
     );
   }
 }

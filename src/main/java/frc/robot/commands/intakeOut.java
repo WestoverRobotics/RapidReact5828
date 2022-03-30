@@ -14,11 +14,9 @@ public class intakeOut extends CommandBase {
   private final Intake m_Intake;
   /**
    * Creates a new ExampleCommand.
-   *
-   * @param subsystem The subsystem used by this command.
    */
-  public intakeOut(Intake subsystem) {
-    m_Intake = subsystem;
+  public intakeOut(Intake intake) {
+    m_Intake = intake;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_Intake);
   }

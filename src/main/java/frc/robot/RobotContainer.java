@@ -30,8 +30,7 @@ public class RobotContainer {
   private final Intake m_Intake = new Intake();
   public static final XboxController m_driverController = new XboxController(0);
   public static final XboxController m_armController = new XboxController(1);
-
-  private final SendableChooser<String> m_autoChooser = new SendableChooser<>();
+  private final autoScoreAndBack m_autoCommand = new autoScoreAndBack(m_driveTrain, m_Intake);
 
   //auto commands
   //private final SequentialCommandGroup m_autoScoreAndBack = new autoScoreAndBack(m_Intake, m_driveTrain);
@@ -43,8 +42,6 @@ public class RobotContainer {
     
     this.initalizeStartup();
 
-    /* Initialize autonomous command chooser and display on the SmartDashboard. */
-    this.initializeAutoChooser();
   }
 
   /**
@@ -90,27 +87,8 @@ public class RobotContainer {
     m_driveTrain.setDefaultCommand(
       new DriveManual(m_driveTrain));
   }
-
-  private void initializeAutoChooser()
-  {
-    /* Add options (which autonomous commands can be selected) to chooser. */
-    m_autoChooser.setDefaultOption("Do Nothing", "doNothing");
-    m_autoChooser.addOption("Score 1 Back Up", "autoScoreAndBack");
-
-    /* Display chooser on SmartDashboard for operators to select which autonomous command to run during the auto period. */
-    SmartDashboard.putData("Autonomous Command", m_autoChooser);
-    
-  }
+  
   public Command getAutonomousCommand() {
-
-    switch (m_autoChooser.getSelected())
-    {
-      case "autoScoreAndBack" :
-        return new autoScoreAndBack();
-
-      default:
-        System.out.println("\nError selecting autonomous command:\nCommand selected: " + m_autoChooser.getSelected() + "\n");
-        return null;
-    }
+    return  m_autoCommand; 
   }
 }
